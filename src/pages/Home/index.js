@@ -22,7 +22,7 @@ export default function Home() {
         {/* Notes */}
         <FlatList />
         {/* ADD TODO BUTTON */}
-        <TouchableOpacity style={styles.addNoteButton}>
+        <TouchableOpacity style={styles.newNoteButton}>
             <AntDesign name='pluscircle' size={60} color={Colors.addButton} />
         </TouchableOpacity>
     </SafeAreaView>

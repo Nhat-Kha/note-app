@@ -30,7 +30,7 @@ export default function Home() {
 }
 
 const styles = StyleSheet.create({
-  conteiner: {
+  container: {
     flex: 1,
     paddingHorizontal: 20,
     paddingTop: 20,

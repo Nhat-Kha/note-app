@@ -7,7 +7,7 @@ import SearchBar from '../../components/SearchBar';
 import Colors from "../../styles/colors"
 import Notes from "../../components/RenderNotes"
 
-export default function Home() {
+export default function Home({navigation}) {
     const [data, setData] = useState(null)
     const [loading, setLoading] = useState(true)
 
@@ -20,7 +20,16 @@ export default function Home() {
         {/* Search Bar */}
         <SearchBar  data={data} onChange={setData} />
         {/* Notes */}
-        <FlatList />
+        <FlatList 
+          ListEmptyComponent={
+            <Text style={{textAlign: 'center'}}>No Data!!</Text>
+          }
+          data={data}
+          keyExtractor={(item) => item.id.toString()}
+          renderItem={({item}) => {
+            return <Notes item={item} navigation={navigation} />
+          }}
+        />
         {/* ADD TODO BUTTON */}
         <TouchableOpacity style={styles.newNoteButton}>
             <AntDesign name='pluscircle' size={60} color={Colors.addButton} />

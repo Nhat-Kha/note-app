@@ -1,18 +1,27 @@
 import React, { useState } from "react";
 import { View, TextInput, Platform } from "react-native";
 import Style from "./style";
+import unorm from "unorm";
 
 export default function SearchBar({ data, onChange }) {
   const [masterData, setMasterData] = useState(data);
+
+  const normalizeText = (text) => {
+    return unorm
+      .nfkd(text)
+      .replace(/[^\x00-\x7F]/g, "")
+      .toUpperCase();
+  };
+
   const search = (text) => {
     if (text) {
+      const searchText = normalizeText(text);
+
       const newData = data.filter((item) => {
-        const itemTitle = item.title
-          ? item.title.toUpperCase()
-          : "".toUpperCase();
-        const titleSearch = text.toUpperCase();
-        return itemTitle.indexOf(titleSearch) > -1;
+        const itemTitle = normalizeText(item.title);
+        return itemTitle.indexOf(searchText) > -1;
       });
+
       onChange(newData);
     } else {
       onChange(masterData);

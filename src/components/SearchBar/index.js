@@ -1,33 +1,34 @@
 import React, { useState } from "react";
 import { View, TextInput, Platform } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import Style from "./style";
-import unorm from "unorm";
 
-export default function SearchBar({ data, onChange }) {
-  const [masterData, setMasterData] = useState(data);
-
+export default function SearchBar({ data, onChange, fullData }) {
+  console.log("fulldata", fullData);
   const normalizeText = (text) => {
-    return unorm
-      .nfkd(text)
-      .replace(/[^\x00-\x7F]/g, "")
-      .toUpperCase();
+    // You can remove the unorm library and use a basic normalization
+    return text
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "") // Remove diacritics
+      .toLowerCase(); // Convert to lowercase
   };
 
   const search = (text) => {
     if (text) {
       const searchText = normalizeText(text);
 
-      const newData = data.filter((item) => {
+      const newData = fullData.filter((item) => {
         const itemTitle = normalizeText(item.title);
-        return itemTitle.indexOf(searchText) > -1;
+        return itemTitle.startsWith(searchText);
       });
 
       onChange(newData);
+      console.log("new data", newData);
     } else {
-      onChange(masterData);
+      onChange(fullData);
     }
   };
-
+  console.log("data", data);
   return (
     <View
       style={[

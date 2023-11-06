@@ -19,6 +19,7 @@ import Notes from "../../components/RenderNotes";
 export default function Home({ navigation }) {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [note, setNote] = useState(null);
 
   useFocusEffect(
     React.useCallback(() => {
@@ -34,6 +35,7 @@ export default function Home({ navigation }) {
           }
           setData(JSON.parse(notes));
           setLoading(false);
+          setNote(JSON.parse(notes));
         } catch (err) {
           console.log(err);
           alert("Error loading notes");
@@ -42,6 +44,7 @@ export default function Home({ navigation }) {
       getData();
     }, [])
   );
+
   if (loading) {
     return (
       <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
@@ -60,7 +63,7 @@ export default function Home({ navigation }) {
         ]}
       >
         <Text style={Style.txtTitle}>NOTE-TAKING-APP</Text>
-        <SearchBar data={data} onChange={setData} />
+        <SearchBar data={data} onChange={setData} fullData={note} />
         <FlatList
           ListEmptyComponent={
             <Text style={{ textAlign: "center" }}>No Data!</Text>
